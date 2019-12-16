@@ -1,0 +1,369 @@
+{
+	"info": {
+		"_postman_id": "6d70b31b-dae8-4c68-a8f1-7391110f4bc1",
+		"name": "AcoesRest",
+		"description": "Simulação de compra e venda de ações na bolsa de valores Bovespa.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ações",
+			"item": [],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Contas",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"nome_01\",\n\t\"senha\": \"senha_01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8085/api_rest/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"api_rest",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CriarConta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id_cliente\": \"1\",\n\t\"email_notificacao\": \"claudiotheles@gmail.com\",\n\t\"saldo_inicial\": \"10000.00\",\n\t\"preco_compra\": \"3.00\",\n\t\"preco_venda\": \"8.00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8085/api_rest/contas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"api_rest",
+								"contas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ObterConta PeloID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8085/api_rest/contas/30",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"api_rest",
+								"contas",
+								"30"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comprar_E_Vender_Acao",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8085/api_rest/contas/comprar_e_vender_acoes/50?destinatario=claudiotheles@gmail.com&assunto=Comprar_E_Venda_Acao_01",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"api_rest",
+								"contas",
+								"comprar_e_vender_acoes",
+								"50"
+							],
+							"query": [
+								{
+									"key": "destinatario",
+									"value": "claudiotheles@gmail.com"
+								},
+								{
+									"key": "assunto",
+									"value": "Comprar_E_Venda_Acao_01"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ObterTodasAsConta",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8085/api_rest/contas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"api_rest",
+								"contas"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Monitoramentos",
+			"item": [
+				{
+					"name": "Monitoramentos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id_empresa\": \"11\",\n\t\"preco_compra\": \"4\",\n\t\"preco_venda\": \"10\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8085/api_rest/monitoramentos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"api_rest",
+								"monitoramentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AtualizarMonitoramento",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"preco_compra\": \"2\",\n\t\"preco_venda\": \"9\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8085/api_rest/monitoramentos/21",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"api_rest",
+								"monitoramentos",
+								"21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeletarMonitoramento",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8085/api_rest/monitoramentos/21",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"api_rest",
+								"monitoramentos",
+								"21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ObterMonitoramentoPeloID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8085/api_rest/monitoramentos/21",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"api_rest",
+								"monitoramentos",
+								"21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ObterTodosMonitoramento",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8085/api_rest/monitoramentos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"api_rest",
+								"monitoramentos"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Home",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8085/api_rest",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"api_rest"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
