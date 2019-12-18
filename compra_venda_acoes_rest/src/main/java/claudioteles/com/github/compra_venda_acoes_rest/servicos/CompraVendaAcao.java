@@ -27,42 +27,53 @@ public class CompraVendaAcao {
 	@Autowired
 	private NegocioDao negocioDao;
 	
-	public Boolean compraAcao(Double valorBolsaValoresAgora, Conta conta, Empresa empresa, String destinatario, String assunto) {
+	/**
+	 * O metodo que faz a compra das ações das empresas.
+	 * 
+	 * @param valorBolsaValoresAgora Valor aleatório gerado pelo simulador.
+	 * @param conta Conta dos clientes
+	 * @param empresa Empresa que tem açẽos para vender na bolsa de valores
+	 * @param destinatario O e-mail para notificar as negociaçẽos de compra e venda de açẽos.
+	 * @param assunto O assunto do e-mail.
+	 * @param contador O contador de 0 a 100 e quando chega em 100 o sistema envia um e-mail de notificações sobre as compras e vendas de ações.
+	 * @return Retorna true se a compra for feita com sucesso, caso contrário, retorna false.
+	 * 
+	 */
+	public Boolean compraAcao(Double valorBolsaValoresAgora, Conta conta, Empresa empresa, String destinatario, String assunto, int contador) {
 		if (conta.getPrecoCompra() <= valorBolsaValoresAgora) {
 			if ( conta.getPrecoCompra() <= empresa.getPrecoVendaUmaAcao() ) {
 				if ( empresa.getTotalEmAcoes() % conta.getPrecoCompra() == 0) {
-					conta.setQuantidadeAcoes((long) (conta.getSaldo() / conta.getQuantidadeAcoes())); // Formula p/ determinar a quantidade de ações.
+					conta.setQuantidadeAcoes((long) (conta.getSaldo() / conta.getPrecoCompra())); // Formula p/ determinar a quantidade de ações.
+					
+					Double valorNegociado = empresa.getTotalEmAcoes() - conta.getSaldo();
+					
+					empresa.setTotalEmAcoes( empresa.getTotalEmAcoes() - conta.getSaldo() );
 					conta.setSaldo(0D);
 					contaDao.atualizarConta(conta);
-					
-					empresa.setTotalEmAcoes(0D);
 					empresaDao.salvarOuAtualizar(empresa);
-					
-					Double valorNegociado = empresa.getTotalEmAcoes();
 					
 					// Salvar a negociação
 					Negocio negociacao = new Negocio();
 					negociacao.setEmpresa(empresa);
 					negociacao.setValorNegociado(valorNegociado);
-					negociacao.setQuantidade( (int) (empresa.getTotalEmAcoes() / conta.getPrecoCompra()) );
+					negociacao.setQuantidade( (int) (valorNegociado / conta.getPrecoCompra()) );
 					negociacao.setData(new Date());
 					
 					negocioDao.salvar(negociacao);
 					
-					// Enviar email para o cliente sobre a compra
-					servicoEmail.enviarEmail(
-						destinatario, assunto, 
-						"Empresa: "+negociacao.getEmpresa()+"\n"
-						+"Valor negociado: "+negociacao.getValorNegociado()+"\n"
-						+"Quantidade: "+negociacao.getQuantidade()+"\n"
-						+"Data: "+negociacao.getData()+""
-					);
-					
+					if (contador == 100) {
+						// Enviar email para o cliente sobre a compra
+						servicoEmail.enviarEmail(conta.getEmailNotificacao(), assunto,
+								"Empresa: " + negociacao.getEmpresa() + "\n" + "Valor negociado: "
+										+ negociacao.getValorNegociado() + "\n" + "Quantidade: "
+										+ negociacao.getQuantidade() + "\n" + "Data: " + negociacao.getData()
+										+ "");
+					}
 					return true;
 				} else {
 					Double quociente = ( empresa.getTotalEmAcoes() / conta.getPrecoCompra() );
 					Double totalAcoesCompradas = ( quociente * conta.getPrecoCompra() );
-					conta.setQuantidadeAcoes((long) (conta.getSaldo() / conta.getQuantidadeAcoes())); // Formula p/ determinar a quantidade de ações.
+					conta.setQuantidadeAcoes((long) (conta.getSaldo() / conta.getPrecoCompra())); // Formula p/ determinar a quantidade de ações.
 					conta.setSaldo(conta.getSaldo() - totalAcoesCompradas);
 					contaDao.atualizarConta(conta);
 					
@@ -73,20 +84,19 @@ public class CompraVendaAcao {
 					Negocio negociacao = new Negocio();
 					negociacao.setEmpresa(empresa);
 					negociacao.setValorNegociado(totalAcoesCompradas);
-					negociacao.setQuantidade( (int) (empresa.getTotalEmAcoes() / conta.getPrecoCompra()) );
+					negociacao.setQuantidade( (int) (negociacao.getValorNegociado() / conta.getPrecoCompra()) );
 					negociacao.setData(new Date());
 					
 					negocioDao.salvar(negociacao);
 					
-					// Enviar email para o cliente sobre a venda
-					servicoEmail.enviarEmail(
-						destinatario, assunto, 
-						"Empresa: "+negociacao.getEmpresa()+"\n"
-						+"Valor negociado: "+negociacao.getValorNegociado()+"\n"
-						+"Quantidade: "+negociacao.getQuantidade()+"\n"
-						+"Data: "+negociacao.getData()+""
-					);
-					
+					if (contador == 100) {
+						// Enviar email para o cliente sobre a venda
+						servicoEmail.enviarEmail(conta.getEmailNotificacao(), assunto,
+								"Empresa: " + negociacao.getEmpresa() + "\n" + "Valor negociado: "
+										+ negociacao.getValorNegociado() + "\n" + "Quantidade: "
+										+ negociacao.getQuantidade() + "\n" + "Data: " + negociacao.getData()
+										+ "");
+					}
 					return true;
 				}
 			}
@@ -94,7 +104,19 @@ public class CompraVendaAcao {
 		return false;
 	}
 	
-	public Boolean venderAcao(Double valorBolsaValoresAgora, Conta conta, Empresa empresa, String assunto, String destinatario) {
+	/**
+	 * O metodo que faz a venda das ações das empresas.
+	 * 
+	 * @param valorBolsaValoresAgora Valor aleatório gerado pelo simulador.
+	 * @param conta Conta dos clientes
+	 * @param empresa Empresa que tem açẽos para vender na bolsa de valores
+	 * @param destinatario O e-mail para notificar as negociaçẽos de compra e venda de açẽos.
+	 * @param assunto O assunto do e-mail.
+	 * @param contador O contador de 0 a 100 e quando chega em 100 o sistema envia um e-mail de notificações sobre as compras e vendas de ações.
+	 * @return Retorna true se a compra for feita com sucesso, caso contrário, retorna false.
+	 * 
+	 */
+	public Boolean venderAcao(Double valorBolsaValoresAgora, Conta conta, Empresa empresa, String assunto, String destinatario, int contador) {
 		if ( conta.getPrecoVenda() <= valorBolsaValoresAgora ) {
 			if (conta.getPrecoVenda() >= empresa.getPrecoCompraUmaAcao()) {
 				Double valorAcoes = ( conta.getQuantidadeAcoes() * conta.getPrecoVenda() );
@@ -113,15 +135,13 @@ public class CompraVendaAcao {
 				
 				negocioDao.salvar(negociacao);
 				
-				// Enviar email para o cliente sobre a compra
-				servicoEmail.enviarEmail(
-					destinatario, assunto, 
-					"Empresa: "+negociacao.getEmpresa()+"\n"
-					+"Valor negociado: "+negociacao.getValorNegociado()+"\n"
-					+"Quantidade: "+negociacao.getQuantidade()+"\n"
-					+"Data: "+negociacao.getData()+""
-				);
-				
+				if (contador == 100) {
+					// Enviar email para o cliente sobre a compra
+					servicoEmail.enviarEmail(conta.getEmailNotificacao(), assunto,
+							"Empresa: " + negociacao.getEmpresa() + "\n" + "Valor negociado: "
+									+ negociacao.getValorNegociado() + "\n" + "Quantidade: "
+									+ negociacao.getQuantidade() + "\n" + "Data: " + negociacao.getData() + "");
+				}
 				return true;
 			}
 		}

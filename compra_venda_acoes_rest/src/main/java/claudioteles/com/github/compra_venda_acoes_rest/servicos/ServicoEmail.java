@@ -15,6 +15,13 @@ public class ServicoEmail {
 	private String destinatario;
 	private String mensagem;
 
+	/**
+	 * Esse metodo envia um e-mail, desde que o arquivo: application.properties tenha sido devidamente configurado.
+	 * 
+	 * @param destinatario Destinatário
+	 * @param assunto Assunto
+	 * @param mensagem O Conteúdo da mensagem.
+	 */
 	public void enviarEmail(String destinatario, String assunto, String mensagem) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(destinatario);

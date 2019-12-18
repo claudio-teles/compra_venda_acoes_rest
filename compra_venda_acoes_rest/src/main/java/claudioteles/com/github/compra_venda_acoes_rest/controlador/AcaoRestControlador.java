@@ -32,6 +32,7 @@ import claudioteles.com.github.compra_venda_acoes_rest.modelos.Monitoramento;
 import claudioteles.com.github.compra_venda_acoes_rest.modelos.Negocio;
 import claudioteles.com.github.compra_venda_acoes_rest.repositorios.RepositorioCliente;
 import claudioteles.com.github.compra_venda_acoes_rest.servicos.CompraVendaAcao;
+import claudioteles.com.github.compra_venda_acoes_rest.servicos.SalvarNegociacaoTXT;
 import claudioteles.com.github.compra_venda_acoes_rest.servicos.ServicoMonitoramento;
 
 @CrossOrigin
@@ -47,6 +48,8 @@ public class AcaoRestControlador {
 	
 	@Autowired
 	private ServicoMonitoramento sm;
+	@Autowired
+	private SalvarNegociacaoTXT salvarTxt;
 	@Autowired
 	private CompraVendaAcao cva;
 	
@@ -113,7 +116,7 @@ public class AcaoRestControlador {
 	}
 	
 	@GetMapping("/contas/comprar_e_vender_acoes/{id_conta}")
-	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseStatus(HttpStatus.OK)
 	public List<Negocio> comprarE_VenderAcao(@PathVariable Long id_conta, @PathParam("destinatario") String destinatario, @PathParam("assunto") String assunto) {
 		System.out.println("Id conta: "+id_conta+"\nDestinatário: "+destinatario+"\nAssunto: "+assunto+"\n");
 		if (this.getLogado() == true) {
@@ -129,11 +132,14 @@ public class AcaoRestControlador {
 				int numeroAleatorio = new Random(0).nextInt(30000); // Valor gerado de 0 -> 30.000.
 				Double preco = (double) (10 + (1 * numeroAleatorio));
 				valorAcaoAleatorio = preco;
-				this.comprar(id_conta, valorAcaoAleatorio, destinatario, assunto); // Comprar uma ação.
-				this.vender(id_conta, valorAcaoAleatorio, destinatario, assunto); // Vender uma açãco.
+				this.comprar(id_conta, valorAcaoAleatorio, destinatario, assunto, contador); // Comprar uma ação.
+				this.vender(id_conta, valorAcaoAleatorio, destinatario, assunto, contador); // Vender uma açãco.
 				contador++;
 				System.out.println("Contador: "+contador);
 			}
+			// Salvar negociações em um arquvi .txt
+			String texto = negDao.buscarNegocios().toString();
+			salvarTxt.salvarEmTxt(texto);
 			return negDao.buscarNegocios();
 		}
 		return null;
@@ -201,32 +207,36 @@ public class AcaoRestControlador {
 	}
 	
 	/**
+	 * Esse metodo realiza a compra de todas as ações que forem possíveis durante um loop de 100 iterações.
+	 * 
 	 * @param id_conta A conta do usuário.
 	 * @param valorAcaoAleatorio Gerado pela bolsa de valores.
 	 * @param destinatario O e-mail para conferir a compra e venda de ações.
 	 * @param assunto O assunto do e-mail para conferir a compra e venda de ações.
 	 * 
-	 * Esse metodo realiza a compra de todas as ações que forem possíveis durante um loop de 100 iterações.
+	 * @param contador 
 	 * 
 	 */
-	private void comprar(Long id_conta, Double valorAcaoAleatorio, String destinatario, String assunto) {
+	private void comprar(Long id_conta, Double valorAcaoAleatorio, String destinatario, String assunto, int contador) {
 		for (Empresa empresa : empDao.pegarTodasEmpresas()) {
-			cva.compraAcao(valorAcaoAleatorio, contaDao.consultarUmaConta(id_conta), empresa, destinatario, assunto);
+			cva.compraAcao(valorAcaoAleatorio, contaDao.consultarUmaConta(id_conta), empresa, destinatario, assunto, contador);
 		}
 	}
 	
 	/**
+	 * Esse metodo realiza a venda de todas as ações que forem possíveis durante um loop de 100 iterações.
+	 * 
 	 * @param id_conta A conta do usuário.
 	 * @param valorAcaoAleatorio Gerado pela bolsa de valores.
 	 * @param destinatario O e-mail para conferir a venda e venda de ações.
 	 * @param assunto O assunto do e-mail para conferir a compra e venda de ações.
 	 * 
-	 * Esse metodo realiza a venda de todas as ações que forem possíveis durante um loop de 100 iterações.
+	 * @param contador 
 	 * 
 	 */
-	private void vender(Long id_conta, Double valorAcaoAleatorio, String destinatario, String assunto) {
+	private void vender(Long id_conta, Double valorAcaoAleatorio, String destinatario, String assunto, int contador) {
 		for (Empresa empresa : empDao.pegarTodasEmpresas()) {
-			cva.venderAcao(valorAcaoAleatorio, contaDao.consultarUmaConta(id_conta), empresa, destinatario, assunto);
+			cva.venderAcao(valorAcaoAleatorio, contaDao.consultarUmaConta(id_conta), empresa, destinatario, assunto, contador);
 		}
 	}
 

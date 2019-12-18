@@ -75,5 +75,10 @@ public class Negocio implements Serializable {
 	public void setData(Date data) {
 		this.data = data;
 	}
+	@Override
+	public String toString() {
+		return "Negocio [idNegociacao=" + idNegociacao + ", empresa=" + empresa + ", valorNegociado=" + valorNegociado
+				+ ", quantidade=" + quantidade + ", data=" + data + "]";
+	}
 
 }
