@@ -22,7 +22,7 @@ public class SalvarNegociacaoTXT {
 			printWriter.print(texto);
 			printWriter.close();  
 			writer.close();
-			System.out.println("Arquivo: \"negociacao.txt\" criado com sucesso!");
+			System.err.println("Arquivo: \"negociacao.txt\" criado com sucesso!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -118,7 +118,7 @@ public class AcaoRestControlador {
 	@GetMapping("/contas/comprar_e_vender_acoes/{id_conta}")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Negocio> comprarE_VenderAcao(@PathVariable Long id_conta, @PathParam("destinatario") String destinatario, @PathParam("assunto") String assunto) {
-		System.out.println("Id conta: "+id_conta+"\nDestinatário: "+destinatario+"\nAssunto: "+assunto+"\n");
+		System.err.println("Id conta: "+id_conta+"\nDestinatário: "+destinatario+"\nAssunto: "+assunto+"\n");
 		if (this.getLogado() == true) {
 			Double valorAcaoAleatorio = 0D;
 			int contador = 0;
@@ -135,7 +135,7 @@ public class AcaoRestControlador {
 				this.comprar(id_conta, valorAcaoAleatorio, destinatario, assunto, contador); // Comprar uma ação.
 				this.vender(id_conta, valorAcaoAleatorio, destinatario, assunto, contador); // Vender uma açãco.
 				contador++;
-				System.out.println("Contador: "+contador);
+				System.err.println("Contador: "+contador);
 			}
 			// Salvar negociações em um arquvi .txt
 			String texto = negDao.buscarNegocios().toString();
