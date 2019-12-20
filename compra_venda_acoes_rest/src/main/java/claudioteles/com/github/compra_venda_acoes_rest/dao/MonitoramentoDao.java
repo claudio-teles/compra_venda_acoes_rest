@@ -15,9 +15,6 @@ public class MonitoramentoDao {
 	@Autowired
 	private RepositorioMonitoramento repositorioMonitoramento;
 	
-	@Autowired
-	private EmpresaDao empresaDao;
-	
 	public Monitoramento inserir(Monitoramento monitoramento) {
 		return repositorioMonitoramento.save(monitoramento);
 	}

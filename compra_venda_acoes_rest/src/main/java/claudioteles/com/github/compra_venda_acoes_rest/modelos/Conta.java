@@ -2,7 +2,6 @@ package claudioteles.com.github.compra_venda_acoes_rest.modelos;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -28,7 +27,7 @@ public class Conta implements Serializable {
 	@SequenceGenerator(name = "gerador_de_id", sequenceName = "sequencia_acoes", initialValue = 50, allocationSize = 1)
 	@Column(name = "id_conta", nullable = false)
 	private Long idConta;
-	@OneToOne(targetEntity = Cliente.class, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToOne(targetEntity = Cliente.class)
 	@JoinColumn(foreignKey = @ForeignKey(name = "uma_conta_tem_um_cliente"), nullable = false)
 	private Cliente cliente;
 	@Column(name = "email_notificacao", nullable = false, length = 40)

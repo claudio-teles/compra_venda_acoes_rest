@@ -3,7 +3,6 @@ package claudioteles.com.github.compra_venda_acoes_rest.modelos;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -31,7 +30,7 @@ public class Negocio implements Serializable {
 	@SequenceGenerator(name = "gerador_de_id", sequenceName = "sequencia_acoes", initialValue = 50, allocationSize = 1)
 	@Column(name = "id_negociacao", nullable = false)
 	private Long idNegociacao;
-	@ManyToOne(cascade = CascadeType.REMOVE)
+	@ManyToOne
 	@JoinColumn(
 		foreignKey = @ForeignKey(name = "negocios_da_empresa"),
 		referencedColumnName = "id_empresa", nullable = false

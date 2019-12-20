@@ -12,9 +12,6 @@ import claudioteles.com.github.compra_venda_acoes_rest.repositorios.RepositorioN
 public class NegocioDao {
 	
 	@Autowired
-	private EmpresaDao empresaDao;
-	
-	@Autowired
 	private RepositorioNegocio repositorioNegocio;
 	
 	public Negocio salvar(Negocio negocio) {

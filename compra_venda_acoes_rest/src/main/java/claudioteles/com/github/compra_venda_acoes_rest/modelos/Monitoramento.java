@@ -2,7 +2,6 @@ package claudioteles.com.github.compra_venda_acoes_rest.modelos;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -28,7 +27,7 @@ public class Monitoramento implements Serializable {
 	@SequenceGenerator(name = "gerador_de_id", sequenceName = "sequencia_acoes", initialValue = 50, allocationSize = 1)
 	@Column(name = "id_monitoramento", nullable = false)
 	private Long idMonitoramento;
-	@OneToOne(targetEntity = Empresa.class, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToOne(targetEntity = Empresa.class)
 	@JoinColumn(foreignKey = @ForeignKey(name = "um_monitoramento_tem_uma_empresa"), nullable = false)
 	private Empresa empresa;
 	@Column(name = "preco_compra", nullable = false)
