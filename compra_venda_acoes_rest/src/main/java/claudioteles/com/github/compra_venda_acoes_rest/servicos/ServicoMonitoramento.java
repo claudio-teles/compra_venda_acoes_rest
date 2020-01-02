@@ -10,7 +10,7 @@ import claudioteles.com.github.compra_venda_acoes_rest.modelos.Monitoramento;
 @Service
 public class ServicoMonitoramento {
 
-	public Monitoramento preencherMonitoramento(EmpresaDao empDao, Map<String, String> json) {
+	public Monitoramento preencherMonitoramento(EmpresaDao empDao, Map<String, String> json) {//
 		Monitoramento monitoramento = new Monitoramento();
 		monitoramento.setEmpresa(empDao.obterEmpresa(Long.parseLong(json.get("id_empresa"))));
 		monitoramento.setPrecoCompra(Double.parseDouble(json.get("preco_compra")));
