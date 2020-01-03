@@ -1,5 +1,5 @@
-# Para executar o projeto no Eclipse ou no STS, abra o arquvio: CompraVendaAcoesRestApplication que contém o método main e clique com o botão direito do mouse
-#, escolha Run As -> Java Application ou usando o terminal ou prompt de comandos: usando o comando de execução do Maven:
+# Para executar o projeto no Eclipse ou no STS, abra o arquivo: CompraVendaAcoesRestApplication que contém o método main e clique com o botão direito do mouse
+# , escolha Run As -> Java Application ou usando o terminal ou prompt de comandos: usando o comando de execução do Maven:
 # mvnw spring-boot:run para o Windows ou ./mvnw spring-boot:run para o Linux, não se esqueça de trocar: usuário e senha
 # do PostgreSQL e também alterar o E-mail e senha para o envio de notificações; para altera - los vá para o arquivo: application.properties.
 
